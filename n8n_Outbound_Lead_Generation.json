@@ -1,0 +1,994 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.Details }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=## Role\nYou are a helpful, Intelligent link generator for Apollo.\n\n## Task\nYour task is to take as input a description of a prospect audience, and turn that into an Apollo Search URL. Only get an Appropriate chatInput {{ $json.Details }} It just have to contain a Keyword(Name) or it can include things like location, country,industry, number of employees etc.\nIf you get any industry other than hospitality, restaurants or food and beverage put that industry as keyword.\nFor Example if you get Manufacturing as the input from the user the link is -> https://app.apollo.io/#/people?sortAscending=false&sortByField=%5Bnone%5D&page=1&qKeywords=Manufacturing\n\nSame goes for all the other industries.\n\n\nHere's an example of an Apollo Search URL:\nLearn From Below Examples\n\nhttps://app.apollo.io/#/people?page=1&personLocations[]=United%20Arab%20Emirates&sortAscending=false&sortByField=recommendations_score&organizationIndustryTagIds[]=5567ce9d7369643bc19c0000&organizationIndustryTagIds[]=5567e0e0736964198de70700&organizationIndustryTagIds[]=5567ce1e7369643b806a0000\n\nThis URL describes a search for people that are:\n\nLocated in the United Arab Emirates.\nAre present in industries such as hospitality, restaurants and (food and beverage).\n\nhttps://app.apollo.io/#/people?page=1&personLocations[]=United%20Arab%20Emirates&sortAscending=false&sortByField=recommendations_score&organizationIndustryTagIds[]=5567ce1e7369643b806a0000\n\nThis URL describes a search for people that are:\n\nLocated in the United Arab Emirates.\nAre present in industries such as food and beverage.\n\nhttps://app.apollo.io/#/people?page=1&personLocations[]=United%20Arab%20Emirates&sortAscending=false&sortByField=recommendations_score&organizationIndustryTagIds[]=5567ce9d7369643bc19c0000\n\nThis URL describes a search for people that are:\n\nLocated in the United Arab Emirates.\nAre present in industries such as hospitality.\n\nhttps://app.apollo.io/#/people?page=1&personLocations[]=United%20Arab%20Emirates&sortAscending=false&sortByField=recommendations_score&organizationIndustryTagIds[]=5567e0e0736964198de70700\n\nThis URL describes a search for people that are:\n\nLocated in the United Arab Emirates.\nAre present in industries such as restaurants.\n\nhttps://app.apollo.io/#/people?page=1&personLocations[]=United%20Arab%20Emirates&personLocations[]=Dubai%2C%20United%20Arab%20Emirates&organizationIndustryTagIds[]=5567e0e0736964198de70700&sortAscending=false&sortByField=recommendations_score\n\nThis URL describes a search for people that are:\n\nLocated in Dubai, United Arab Emirates.\nAre present in industries such as restaurants.\n\nhttps://app.apollo.io/#/people?page=1&organizationIndustryTagIds[]=5567e0e0736964198de70700&sortAscending=false&sortByField=recommendations_score&personLocations[]=Sharjah%2C%20United%20Arab%20Emirates\n\nThis URL describes a search for people that are:\n\nLocated in Sharjah, United Arab Emirates.\nAre present in industries such as restaurants.\n\nhttps://app.apollo.io/#/people?page=1&organizationIndustryTagIds[]=5567e0e0736964198de70700&sortAscending=false&sortByField=recommendations_score&personLocations[]=Ajman%2C%20United%20Arab%20Emirates\n\nThis URL describes a search for people that are:\n\nLocated in Ajman, United Arab Emirates.\nAre present in industries such as restaurants.\n\nhttps://app.apollo.io/#/people?page=1&organizationIndustryTagIds[]=5567e0e0736964198de70700&sortAscending=false&sortByField=recommendations_score&personLocations[]=Abu%20Dhabi%2C%20United%20Arab%20Emirates\n\nThis URL describes a search for people that are:\n\nLocated in Abu Dhabi, United Arab Emirates.\nAre present in industries such as restaurants.\n\nhttps://app.apollo.io/#/people?page=1&organizationIndustryTagIds[]=5567e0e0736964198de70700&organizationIndustryTagIds[]=5567ce9d7369643bc19c0000&sortAscending=false&sortByField=recommendations_score&personLocations[]=Abu%20Dhabi%2C%20United%20Arab%20Emirates\n\nThis URL describes a search for people that are:\n\nLocated in Abu Dhabi, United Arab Emirates.\nAre present in industries such as restaurants and hospitality.\n\nhttps://app.apollo.io/#/people?page=1&personLocations[]=Dubai%2C%20United%20Arab%20Emirates&organizationIndustryTagIds[]=5567ce9d7369643bc19c0000&organizationIndustryTagIds[]=5567e0e0736964198de70700&sortAscending=false&sortByField=%5Bnone%5D&organizationNumEmployeesRanges[]=100%2C400\n\nLocated in Dubai, United Arab Emirates.\nAre present in industries such as restaurants and hospitality. With Number of people ranging from 100-400.\n\nhttps://app.apollo.io/#/people?sortAscending=false&sortByField=%5Bnone%5D&qKeywords=Gaurav%20Jairath\n\n\nPerson With Name as Gaurav Jairath\n\nThese are the fields you can change:\npersonLocations[], Keywords, personTitles[], organizationNumEmployeesRanges[] and organizationIndustryTagIds[]\nIf hospitality comes then put organizationIndustryTagIds[] as \"5567ce9d7369643bc19c0000\".\nIf restaurants comes then put organizationIndustryTagIds[] as \"5567e0e0736964198de70700\".\nIf food and beverage comes then put organizationIndustryTagIds[] as \"5567ce1e7369643b806a0000\".\nDo not add or change any other fields. Use the above template.\n\nNOTE : If the user Doesnt give you a input which doesnt have details Like the industry and country. ASK BACK THE QUESTION\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        -432,
+        336
+      ],
+      "id": "6837925a-3348-4b68-a03f-b39c5c7e5e81",
+      "name": "Apollo URL Generator Agent"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"URL\": \"https://app.apollo.io/#/people?page=1&personLocations[]=United%20Arab%20Emirates&sortAscending=false&sortByField=recommendations_score&organizationIndustryTagIds[]=5567ce9d7369643bc19c0000\",\n  \"Message\": \"Generated Apollo URL for UAE hospitality professionals\",\n  \"Industry\": \"hospitality\",\n  \"Location\": \"United Arab Emirates\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -208,
+        560
+      ],
+      "id": "392c996e-8e2b-4724-82b1-d838885fa9fb",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1SbjbIka10WqMPIJJMvPNfdtf2IgvVfsUyMtlYMRoQAw",
+          "mode": "list",
+          "cachedResultName": "n8n Lead Gen USing Apify 17th Jul '25",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1SbjbIka10WqMPIJJMvPNfdtf2IgvVfsUyMtlYMRoQAw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1SbjbIka10WqMPIJJMvPNfdtf2IgvVfsUyMtlYMRoQAw/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Full Name ": "={{ $json.firstName }} {{ $json.lastName }}",
+            "Email": "={{ $json.emailAddress }}",
+            "LinkedIn URL": "={{ $json.linkedInProfileUrl }}",
+            "Job Title ": "={{ $json.headline }}",
+            "Company": "={{ $json.positionHistory[0].companyName }}",
+            "Industry": "={{ $json.company.businessIndustry }}",
+            "Location": "={{ $json.cityName }} {{ $json.countryName }}",
+            "Phone": "=({{ $json.contactPhoneNumbers[0].sanitizedNumber }})",
+            "Website": "={{ $json.company.websiteUrl }}",
+            "Seniority": "={{ $json.jobSeniority }}",
+            "Created At": "={{ new Date().toLocaleString() }}",
+            "Status": "New "
+          },
+          "matchingColumns": [
+            "Full Name "
+          ],
+          "schema": [
+            {
+              "id": "Full Name ",
+              "displayName": "Full Name ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "LinkedIn URL",
+              "displayName": "LinkedIn URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Job Title ",
+              "displayName": "Job Title ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Company",
+              "displayName": "Company",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Industry",
+              "displayName": "Industry",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Location",
+              "displayName": "Location",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Website",
+              "displayName": "Website",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Seniority",
+              "displayName": "Seniority",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Created At",
+              "displayName": "Created At",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        224,
+        336
+      ],
+      "id": "",
+      "name": "Save Leads to Sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "",
+          "name": "Akhil's Personal Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1SbjbIka10WqMPIJJMvPNfdtf2IgvVfsUyMtlYMRoQAw",
+          "mode": "list",
+          "cachedResultName": "n8n Lead Gen USing Apify 17th Jul '25",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1SbjbIka10WqMPIJJMvPNfdtf2IgvVfsUyMtlYMRoQAw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1556856424,
+          "mode": "list",
+          "cachedResultName": "Email Tracker",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1SbjbIka10WqMPIJJMvPNfdtf2IgvVfsUyMtlYMRoQAw/edit#gid=1556856424"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        672,
+        336
+      ],
+      "id": "",
+      "name": "Read Email Tracker",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "",
+          "name": "Akhil's Personal Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Advanced Email Deduplication and Processing Logic\n// This handles both first run (empty tracker) and subsequent runs\n\nconst newLeads = $('Save Leads to Sheet').all();\nconst emailTracker = $('Read Email Tracker').all();\n\n// Extract already sent emails\nconst sentEmails = emailTracker.length > 0 ? \n  emailTracker.map(row => row.json['Email']).filter(Boolean) : [];\n\n// Filter leads: must have email AND not already sent\nconst validLeads = newLeads.filter(lead => {\n  const email = lead.json['Email'];\n  const hasValidEmail = email && \n                       email.trim() !== '' && \n                       email.includes('@') && \n                       email.includes('.');\n  const notAlreadySent = !sentEmails.includes(email);\n  \n  return hasValidEmail && notAlreadySent;\n});\n\n// Add processing metadata\nconst processedLeads = validLeads.map(lead => {\n  return {\n    json: {\n      ...lead.json,\n      processing_timestamp: new Date().toISOString(),\n      email_status: 'ready_to_send'\n    }\n  };\n});\n\n// Comprehensive logging\nconsole.log('\\n📊 EMAIL DEDUPLICATION RESULTS:');\nconsole.log(├── Total new leads: ${newLeads.length});\nconsole.log(├── Already sent emails: ${sentEmails.length});\nconsole.log(├── Valid leads to process: ${validLeads.length});\nconsole.log(├── Filtered out: ${newLeads.length - validLeads.length});\nconsole.log(└── Processing status: ${validLeads.length > 0 ? 'READY' : 'COMPLETE'});\n\nif (validLeads.length > 0) {\n  console.log('\\n📝 LEADS TO PROCESS:');\n  validLeads.slice(0, 5).forEach((lead, index) => {\n    console.log(├── ${index + 1}. ${lead.json['Full Name']} (${lead.json['Email']}));\n  });\n  if (validLeads.length > 5) {\n    console.log(└── ... and ${validLeads.length - 5} more);\n  }\n}\n\n// Return processed leads or empty array if none to process\nreturn processedLeads.length > 0 ? processedLeads : [];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        896,
+        336
+      ],
+      "id": "4a26d9ed-f58e-4db6-8510-db53c094747b",
+      "name": "Email Deduplication Processor"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "email-exists",
+              "leftValue": "={{ $json.Email }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        336
+      ],
+      "id": "eacc3eb0-5e69-4d13-99ac-f73b22ee3c6a",
+      "name": "Email Validation Check"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "",
+          "mode": "list",
+          "cachedResultName": "n8n Lead Gen USing Apify 17th Jul '25",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1SbjbIka10WqMPIJJMvPNfdtf2IgvVfsUyMtlYMRoQAw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1556856424,
+          "mode": "list",
+          "cachedResultName": "Email Tracker",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1SbjbIka10WqMPIJJMvPNfdtf2IgvVfsUyMtlYMRoQAw/edit#gid=1556856424"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Full Name": "={{ $('Email Validation Check').item.json['Full Name '] }}",
+            "Email": "={{ $('Email Validation Check').item.json.Email }}",
+            "Company": "={{ $('Email Validation Check').item.json.Company }}",
+            "Subject": "={{ $json.output.subject }}",
+            "Created At": "={{ new Date().toLocaleString() }}",
+            "Campaign": "={{ $('Apollo URL Generator Agent').first().json.output.Industry }} - {{ $('Apollo URL Generator Agent').first().json.output.Location }}",
+            "Status": "Draft Created"
+          },
+          "matchingColumns": [
+            "Email"
+          ],
+          "schema": [
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Full Name",
+              "displayName": "Full Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Company",
+              "displayName": "Company",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Subject",
+              "displayName": "Subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Created At",
+              "displayName": "Created At",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Campaign",
+              "displayName": "Campaign",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        1744,
+        496
+      ],
+      "id": "5186e5fe-b871-459e-933b-507c46890df6",
+      "name": "Update Email Tracker",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "",
+          "name": "Akhil's Personal Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "subject": "={{ $json.output.subject }}",
+        "emailType": "html",
+        "message": "={{ $json.output.email_content }}",
+        "options": {
+          "sendTo": "={{ $json.output.recipient_email }}"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1744,
+        736
+      ],
+      "id": "b911edc7-76eb-422f-8241-872583bb7982",
+      "name": "Create Gmail Draft",
+      "webhookId": "05d0eef5-c250-4fd5-9b8b-3569e148f653",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "l86AhNpcLsPTWoA9",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1968,
+        544
+      ],
+      "id": "12207bdd-06d5-4e69-843b-bca5bb908304",
+      "name": "Final Results Aggregator"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Campaign Summary Generator\nconst processedEmails = $input.all();\nconst campaignData = $('Apollo URL Generator Agent').first().json.output;\n\nconst summary = {\n  campaign: {\n    industry: campaignData.Industry,\n    location: campaignData.Location,\n    timestamp: new Date().toISOString()\n  },\n  results: {\n    total_leads_found: $('Apify API - Fetch Leads from Apollo').all().length,\n    total_leads_saved: $('Save Leads to Sheet').all().length,\n    emails_processed: processedEmails.length,\n    drafts_created: processedEmails.filter(item => item.json.success !== false).length\n  },\n  next_steps: [\n    \"Review Gmail drafts before sending\",\n    \"Update Email Tracker with send status\",\n    \"Monitor responses and engagement\",\n    \"Schedule follow-up sequences\"\n  ]\n};\n\nconsole.log('\\n🎯 CAMPAIGN SUMMARY:');\nconsole.log(├── Industry: ${summary.campaign.industry});\nconsole.log(├── Location: ${summary.campaign.location});\nconsole.log(├── Leads Found: ${summary.results.total_leads_found});\nconsole.log(├── Leads Saved: ${summary.results.total_leads_saved});\nconsole.log(├── Emails Processed: ${summary.results.emails_processed});\nconsole.log(└── Drafts Created: ${summary.results.drafts_created});\n\nreturn [{ json: summary }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2192,
+        544
+      ],
+      "id": "c7763b26-03b3-4726-b003-ecfab6feb757",
+      "name": "Campaign Summary Generator"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1424,
+        144
+      ],
+      "id": "d75c7ca1-58f6-4c37-9907-014d973f5d3f",
+      "name": "No New Leads - End"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "6157779150",
+        "contextWindowLength": 6
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -336,
+        560
+      ],
+      "id": "ff32f8e0-c4ad-4ae5-9754-338b6d289938",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
+      "typeVersion": 1,
+      "position": [
+        -464,
+        560
+      ],
+      "id": "",
+      "name": "DeepSeek Chat Model",
+      "credentials": {
+        "deepSeekApi": {
+          "id": "",
+          "name": "DeepSeek account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "=6157779150",
+        "text": "Lead Fetch is Successfull !!",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        448,
+        336
+      ],
+      "id": "d79a4e2a-4f3e-43c1-bcd0-3e1096d3f206",
+      "name": "Lead Fetch Confirmed Message",
+      "webhookId": "c9a43daa-27a6-4c29-a4a9-f3cb0b5f4df9",
+      "executeOnce": true,
+      "credentials": {
+        "telegramApi": {
+          "id": "",
+          "name": "Telegram account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "=6157779150",
+        "text": "Email Content is being Generated For New Leads Currently.",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1424,
+        336
+      ],
+      "id": "3b1022d4-c1b6-43bb-944a-053e877cbeb0",
+      "name": "Email Writing Confirmation",
+      "webhookId": "c9a43daa-27a6-4c29-a4a9-f3cb0b5f4df9",
+      "executeOnce": true,
+      "credentials": {
+        "telegramApi": {
+          "id": "",
+          "name": "Telegram account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "=6157779150",
+        "text": "Email Outreach Has been Completed Successfully.",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1968,
+        784
+      ],
+      "id": "e4ce6e76-d482-4781-b692-73cda37a018a",
+      "name": "Email Sent Confirmation",
+      "webhookId": "c9a43daa-27a6-4c29-a4a9-f3cb0b5f4df9",
+      "executeOnce": true,
+      "credentials": {
+        "telegramApi": {
+          "id": "",
+          "name": "Telegram account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"message\": \"Personalized B2B outreach email for hospitality industry lead\",\n  \"subject\": \"Streamline Dubai Golf's Revenue Operations & UAE VAT Compliance\",\n  \"recipient_email\": \"malacapa@dubaigolf.com\",\n  \"email_content\": \"<!DOCTYPE html><html><body style='font-family: Arial, sans-serif; line-height: 1.6; color: #333;'><p>Hi Michael,</p><p>I came across your profile and was impressed by your expertise in revenue optimization for Dubai Golf. Managing revenue streams across golf operations, F&B, and events while ensuring UAE VAT compliance can be quite challenging in the hospitality sector.</p><p>At HostBooks ERP, we've helped numerous hospitality businesses in the UAE streamline their operations with our specialized modules:</p><p><strong>FnB360:</strong> Seamlessly integrates your restaurant and catering operations with real-time inventory tracking and POS integration<br><strong>HTL360:</strong> Comprehensive hospitality management covering bookings, guest services, and revenue optimization<br><strong>UAE VAT Compliance:</strong> Automated tax calculations and reporting that adapts to UAE regulations</p><p>Many revenue managers like yourself struggle with fragmented systems that make it difficult to get a unified view of performance across different revenue centers. Our ERP eliminates these silos, providing you with real-time insights to optimize pricing strategies and improve profitability.</p><p>Given your role in revenue optimization and analysis, I believe a quick conversation about how we've helped similar hospitality businesses increase their operational efficiency by 30% would be valuable.</p><p><strong>Will you be available for a call tomorrow at 3 PM?</strong></p><p>Best regards,<br><strong>Akhil Baburaj</strong><br>Summer Intern<br>HostBooks Limited<br>Email: akhil.baburaj@hostbooks.com</p></body></html>\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1504,
+        864
+      ],
+      "id": "46593a1e-c55d-4062-9131-e6ca075d1744",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are an expert email writer specializing in B2B outreach for HostBooks ERP.\n\n*LEAD INFORMATION:*\n- Name: {{ $('Email Validation Check').item.json['Full Name '] }}\n- Title: {{ $('Email Validation Check').item.json['Job Title '] }} \n- Company: {{ $('Email Validation Check').item.json.Company }}\n- Industry: {{ $('Email Validation Check').item.json.Industry }}\n- Location: {{ $('Email Validation Check').item.json.Location }} \n- LinkedIn: {{ $('Email Validation Check').item.json['LinkedIn URL'] }}\n- Email ID: {{ $('Email Validation Check').item.json.Email }}\n",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "type": "HumanMessagePromptTemplate",
+              "message": "=*TASK:\nWrite a personalized cold email that:\n1. Addresses them by name\n2. Shows knowledge of their industry/role\n3. Highlights HostBooks ERP benefits for their specific industry\n4. Includes a clear call-to-action. (Follow This idea -> Will You be available for a Call tomorrow at 3 PM)\n5. Is professional but engaging and add some good design to it in html format which is supported in Gmail.\n6. Add HostBooks Logo also (https://i.imgur.com/tqlIwlh.png) but make it small and put it at the beginning and make it centre aligned.\n\nFOCUS AREAS:\n- For hospitality: Mention FnB360 and HTL360 modules\n- For restaurants: Emphasize inventory management and POS integration\n- For food & beverage: Highlight supply chain and production management and FnB360 module of HostBooks ERP.\n- For finance roles: Focus on UAE VAT compliance and financial reporting\n- For operations: Emphasize workflow automation and efficiency\n- For any other industries related to manufacturing: Focus on MFG360 Product\n- For industries like real estate or any industries other than Hospitality, restaurants or food and beverages: Include Cloud 360 ERP.\n\nFORMAT:\nSubject: [Compelling subject line]\n\n[Email content with proper HTML formatting]\n\nSENDER INFO:\nAkhil Baburaj\nSummer Intern\nHostBooks Limited\nEmail: akhil.baburaj@hostbooks.com\n\nREQUIREMENTS:*\n- Keep email under 360 words.\n- Include specific industry pain points.\n- Make it sound natural, not template-like.\n- End with clear next step.\n\nGenerate the complete email now."
+            },
+            {
+              "message": "You are an expert email writer specializing in B2B outreach for HostBooks ERP."
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        1344,
+        640
+      ],
+      "id": "47494e69-37f0-4bc1-b216-08aeb17d3034",
+      "name": "Email Writer And Content Extractor"
+    },
+    {
+      "parameters": {
+        "options": {
+          "temperature": 0.5
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
+      "typeVersion": 1,
+      "position": [
+        1376,
+        864
+      ],
+      "id": "a23cd25a-26e5-4e83-851a-1a60a1cec84b",
+      "name": "DeepSeek Email Writer And Content Extractor",
+      "credentials": {
+        "deepSeekApi": {
+          "id": "",
+          "name": "DeepSeek account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "",
+        "text": "=Leads Have been found and saved.",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2416,
+        544
+      ],
+      "id": "60677598-92f2-4bfe-ab40-13c98c8e4fb1",
+      "name": "Send a text message",
+      "webhookId": "d6766e05-d648-44ce-a628-a9a426911802",
+      "executeOnce": true,
+      "credentials": {
+        "telegramApi": {
+          "id": "",
+          "name": "Telegram account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "formTitle": "Enter Preferred Lead Details",
+        "formDescription": "=Enter The Lead Description |[1) Include The Industry ->Hospitality, Restaurants, Food and Beverages etc.2) Location Details,3) Job Title {Optional},4) Number Of Employees {Optional}]",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Details",
+              "fieldType": "textarea",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -688,
+        336
+      ],
+      "id": "",
+      "name": "On form submission",
+      "webhookId": ""
+    },
+    {
+      "parameters": {
+        "content": "## Apollo Link Generator\n",
+        "height": 480,
+        "width": 704
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -768,
+        224
+      ],
+      "typeVersion": 1,
+      "id": "18ad6bfa-7429-40b6-b035-d605726b39af",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Fetching The Leads From Apollo Using Scrapers in Apify \n",
+        "height": 480,
+        "width": 624,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -48,
+        16
+      ],
+      "typeVersion": 1,
+      "id": "",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Email Validation and Deduplication",
+        "height": 480,
+        "width": 608
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        640,
+        16
+      ],
+      "typeVersion": 1,
+      "id": "",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Personalized Email Generation And Outreach \n*Double click* to edit me. [Guide](https://docs.n8n.io/workflows/sticky-notes/)",
+        "height": 528,
+        "width": 1440,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1200,
+        512
+      ],
+      "typeVersion": 1,
+      "id": "0c44e0de-14de-4b6a-8dde-99f0a7cbbfea",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.apify.com/v2/acts/aSNCbyqr36vMcZSTb/run-sync-get-dataset-items",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": ""
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"count\": 20,\n    \"excludeGuessedEmails\": false,\n    \"excludeNoEmails\": true,\n    \"getEmails\": true,\n    \"searchUrl\": \"{{ $json.output.URL }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        336
+      ],
+      "id": "",
+      "name": "Apify API - Fetch Leads from Apollo"
+    }
+  ],
+  "connections": {
+    "Apollo URL Generator Agent": {
+      "main": [
+        [
+          {
+            "node": "Apify API - Fetch Leads from Apollo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Apollo URL Generator Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Leads to Sheet": {
+      "main": [
+        [
+          {
+            "node": "Lead Fetch Confirmed Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Email Tracker": {
+      "main": [
+        [
+          {
+            "node": "Email Deduplication Processor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Email Deduplication Processor": {
+      "main": [
+        [
+          {
+            "node": "Email Validation Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Email Validation Check": {
+      "main": [
+        [
+          {
+            "node": "Email Writer And Content Extractor",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Email Writing Confirmation",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No New Leads - End",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Email Tracker": {
+      "main": [
+        [
+          {
+            "node": "Final Results Aggregator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Gmail Draft": {
+      "main": [
+        [
+          {
+            "node": "Final Results Aggregator",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Email Sent Confirmation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Final Results Aggregator": {
+      "main": [
+        [
+          {
+            "node": "Campaign Summary Generator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Campaign Summary Generator": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Apollo URL Generator Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeepSeek Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Apollo URL Generator Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lead Fetch Confirmed Message": {
+      "main": [
+        [
+          {
+            "node": "Read Email Tracker",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Email Writer And Content Extractor",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Email Writer And Content Extractor": {
+      "main": [
+        [
+          {
+            "node": "Create Gmail Draft",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Update Email Tracker",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeepSeek Email Writer And Content Extractor": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Email Writer And Content Extractor",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Apollo URL Generator Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Apify API - Fetch Leads from Apollo": {
+      "main": [
+        [
+          {
+            "node": "Save Leads to Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "instanceId": "74443c739d7bd352235cf763d36ca2bd5e10cbc3879d609603dbb3a24862c65e"
+  }
+}
