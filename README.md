@@ -3,7 +3,7 @@
 This n8n workflow automates the entire B2B lead generation and outreach process, from prospect targeting to personalized email creation.
 
 ## Workflow Overview
-![Workflow Demo](https://imgur.com/a/s1Et5ZY)
+![Workflow Demo]([https://imgur.com/a/s1Et5ZY](https://i.imgur.com/iRN5TAR.png))
 
 <!-- Insert your video here -->
 <!-- For GitHub README, use: ![Video Description](path/to/video.mp4) -->
